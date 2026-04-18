@@ -21,7 +21,7 @@ import {
   Wallet,
   Users,
 } from "lucide-react";
-import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY, fmt, short, hash } from "@/lib/chain";
+import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY, fmt, short, hash, genesisBlock } from "@/lib/chain";
 
 const STORAGE_KEY = "webnett-local-node";
 
@@ -40,26 +40,6 @@ function wallet(label = "Wallet") {
     privateKey: `priv_${hash(seed + "_private").repeat(3).slice(0, 48)}`,
     createdAt: new Date().toLocaleString(),
   };
-}
-
-function genesisBlock() {
-  const block = {
-    index: 0,
-    timestamp: new Date().toLocaleString(),
-    previousHash: "0",
-    nonce: 0,
-    transactions: [
-      {
-        id: "genesis",
-        from: "NETWORK",
-        to: "GENESIS_RESERVE",
-        amount: 1_000_000,
-        fee: 0,
-        note: "Genesis reserve",
-      },
-    ],
-  };
-  return { ...block, hash: hash(block) };
 }
 
 function fresh() {
@@ -750,6 +730,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
