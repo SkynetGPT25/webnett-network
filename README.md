@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+﻿# Webnett Network Prototype
 
-## Getting Started
+Webnett Network is a local prototype for a trust-first digital currency network.
 
-First, run the development server:
+## Milestone
 
-```bash
+Webnett Local Prototype MVP v0.1
+
+This milestone proves that Webnett can run locally on Windows with Next.js as a browser-based prototype.
+
+## Current Features
+
+- Demo WBN wallets
+- Test WBN faucet
+- Wallet-to-wallet transfers
+- Block mining
+- Block explorer
+- Transaction history
+- Transaction receipts
+- Validator staking
+- Locked stake accounting
+- Governance voting
+- Validator reward pool
+- Local browser autosave
+- Launch readiness dashboard
+
+## Tested Working
+
+- Next.js local development server
+- Custom Webnett page loaded from app/page.tsx
+- Wallet generation
+- Adding test WBN
+- Sending WBN between wallets
+- Mining and confirming blocks
+- Explorer activity
+- Validator staking
+- Launch Center dashboard
+
+## Run Locally
+
+From PowerShell:
+
+cd C:\Users\jkk-a\webnett-network
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open the local URL shown in the terminal.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Usually:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+http://localhost:3000
 
-## Learn More
+If port 3000 is busy, use the port shown by Next.js, such as:
 
-To learn more about Next.js, take a look at the following resources:
+http://localhost:3001
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Important Files
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+app/page.tsx
+components/
+components/ui/
+lib/
+package.json
+README.md
 
-## Deploy on Vercel
+The main Webnett prototype currently lives in app/page.tsx.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Important Disclaimer
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This is experimental prototype software only.
+
+WBN in this project is demo/test currency only. It has no real-world value, is not a financial product, is not an investment, is not exchange-listed, and is not a live cryptocurrency.
+
+Do not present this prototype as a public token, investment opportunity, or financial product.
+
+## Safe Public Description
+
+Webnett Network is a trust-first digital currency experiment with demo wallets, block mining, validator staking, governance voting, reward pools, and transparent explorer activity.
+
+It is currently a local prototype and testnet-style software demo.
+
+## Next Development Steps
+
+1. Keep the current working version safe.
+2. Create a Git checkpoint.
+3. Split the large app/page.tsx file into smaller files.
+4. Move blockchain logic into lib/chain.ts.
+5. Move wallet logic into lib/wallet.ts.
+6. Move storage logic into lib/storage.ts.
+7. Move UI into components/WebnettDashboard.tsx.
+8. Add real cryptographic transaction signing.
+9. Add backend persistence.
+10. Add peer-to-peer testnet node logic.
+11. Add a proper public landing page.
+12. Run security review before any public release.
+
+## Project Notes
+
+The current version has already proven the main concept locally:
+
+- The app loads.
+- Wallets work.
+- Test WBN can be created.
+- Transfers can be queued.
+- Blocks can be mined.
+- Validators can be created.
+- Governance exists.
+- The Launch Center can track readiness.
+
+This is the foundation for the next phase of Webnett development.
