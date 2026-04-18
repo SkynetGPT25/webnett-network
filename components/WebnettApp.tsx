@@ -21,7 +21,7 @@ import {
   Wallet,
   Users,
 } from "lucide-react";
-import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY } from "@/lib/chain";
+import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY, fmt, short } from "@/lib/chain";
 
 const STORAGE_KEY = "webnett-local-node";
 
@@ -41,13 +41,6 @@ function hash(input: any) {
   return `${(h >>> 0).toString(16).padStart(8, "0")}${Math.abs(h).toString(36)}`;
 }
 
-function fmt(n: any) {
-  return Number(n || 0).toLocaleString(undefined, { maximumFractionDigits: 4 });
-}
-
-function short(a = "") {
-  return a.length > 16 ? `${a.slice(0, 10)}...${a.slice(-6)}` : a;
-}
 
 function wallet(label = "Wallet") {
   const seed = `${label}_${Date.now()}_${Math.random()}`;
@@ -768,6 +761,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
