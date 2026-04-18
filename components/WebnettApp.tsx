@@ -31,17 +31,6 @@ function id() {
     : `id_${Date.now()}_${Math.random().toString(36).slice(2)}`;
 }
 
-function hash(input: any) {
-  let h = 2166136261;
-  const s = JSON.stringify(input);
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
-  }
-  return `${(h >>> 0).toString(16).padStart(8, "0")}${Math.abs(h).toString(36)}`;
-}
-
-
 function wallet(label = "Wallet") {
   const seed = `${label}_${Date.now()}_${Math.random()}`;
   return {
@@ -761,6 +750,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
