@@ -21,7 +21,7 @@ import {
   Wallet,
   Users,
 } from "lucide-react";
-import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY, fmt, short } from "@/lib/chain";
+import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY, fmt, short, hash } from "@/lib/chain";
 
 const STORAGE_KEY = "webnett-local-node";
 
@@ -761,6 +761,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
