@@ -21,10 +21,8 @@ import {
   Wallet,
   Users,
 } from "lucide-react";
+import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY } from "@/lib/chain";
 
-const SYMBOL = "WBN";
-const BLOCK_REWARD = 25;
-const MAX_SUPPLY = 100_000_000;
 const STORAGE_KEY = "webnett-local-node";
 
 function id() {
@@ -770,5 +768,6 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
