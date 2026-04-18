@@ -1,6 +1,5 @@
+﻿// @ts-nocheck
 "use client";
-// @ts-nocheck
-
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Activity,
@@ -423,7 +422,7 @@ export default function Home() {
               </span>
             </h1>
             <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300">
-              Demo wallets, WBN transfers, mining, explorer receipts, validator staking, governance voting, and reward pools. Prototype only — not a live financial asset.
+              Demo wallets, WBN transfers, mining, explorer receipts, validator staking, governance voting, and reward pools. Prototype only â€” not a live financial asset.
             </p>
             <div className="mt-6 grid gap-3 md:grid-cols-4">
               {[
@@ -609,7 +608,7 @@ export default function Home() {
                 <h3 className="mb-3 text-lg font-bold">Transaction Receipt</h3>
                 {selectedReceipt ? (
                   <div className="rounded-2xl bg-emerald-300/10 p-4 text-sm">
-                    <p><b>{fmt(selectedReceipt.amount)} {SYMBOL}</b> — Confirmed</p>
+                    <p><b>{fmt(selectedReceipt.amount)} {SYMBOL}</b> â€” Confirmed</p>
                     <p>Block: #{selectedReceipt.blockIndex}</p>
                     <p>Type: {selectedReceipt.note}</p>
                     <p className="break-all">From: {selectedReceipt.from}</p>
@@ -623,7 +622,7 @@ export default function Home() {
                 <div className="max-h-72 space-y-2 overflow-auto">
                   {txs.map((tx: any) => (
                     <button key={`${tx.blockHash}-${tx.id}`} onClick={() => setSelectedReceipt(tx)} className="w-full rounded-xl bg-white/5 p-3 text-left text-sm hover:bg-white/10">
-                      <p><b>{fmt(tx.amount)} {SYMBOL}</b> · Block #{tx.blockIndex}</p>
+                      <p><b>{fmt(tx.amount)} {SYMBOL}</b> Â· Block #{tx.blockIndex}</p>
                       <p className="break-all text-slate-400">To: {tx.to}</p>
                       <p className="text-slate-500">{tx.note}</p>
                     </button>
@@ -713,7 +712,7 @@ export default function Home() {
                         </div>
                         <span className="h-fit rounded-full bg-emerald-400/15 px-3 py-1 text-sm font-bold text-emerald-200">{p.status}</span>
                       </div>
-                      <p className="mt-3 text-sm text-slate-300">Yes: {fmt(yes)} {SYMBOL} · No: {fmt(no)} {SYMBOL}</p>
+                      <p className="mt-3 text-sm text-slate-300">Yes: {fmt(yes)} {SYMBOL} Â· No: {fmt(no)} {SYMBOL}</p>
                       <div className="mt-3 flex gap-2">
                         <Btn onClick={() => vote(p.id, "yes")} disabled={p.status !== "Open"} variant="green">Vote Yes</Btn>
                         <Btn onClick={() => vote(p.id, "no")} disabled={p.status !== "Open"} variant="dark">Vote No</Btn>
@@ -771,3 +770,4 @@ export default function Home() {
     </main>
   );
 }
+
