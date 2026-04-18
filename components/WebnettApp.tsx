@@ -21,7 +21,7 @@ import {
   Wallet,
   Users,
 } from "lucide-react";
-import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY, fmt, short, hash, genesisBlock } from "@/lib/chain";
+import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY, fmt, short, hash, genesisBlock, balances } from "@/lib/chain";
 
 const STORAGE_KEY = "webnett-local-node";
 
@@ -62,20 +62,6 @@ function fresh() {
       },
     ],
   };
-}
-
-function balances(chain: any[], pending: any[] = []) {
-  const b: any = {};
-  for (const block of chain) {
-    for (const tx of block.transactions || []) {
-      if (tx.from !== "NETWORK") b[tx.from] = (b[tx.from] || 0) - tx.amount - (tx.fee || 0);
-      b[tx.to] = (b[tx.to] || 0) + tx.amount;
-    }
-  }
-  for (const tx of pending) {
-    if (tx.from !== "NETWORK") b[tx.from] = (b[tx.from] || 0) - tx.amount - (tx.fee || 0);
-  }
-  return b;
 }
 
 function Btn({ children, onClick, variant = "primary", disabled = false }: any) {
@@ -730,6 +716,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
