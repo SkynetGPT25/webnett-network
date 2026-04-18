@@ -22,25 +22,9 @@ import {
   Users,
 } from "lucide-react";
 import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY, fmt, short, hash, genesisBlock, balances } from "@/lib/chain";
+import { id, wallet } from "@/lib/wallet";
 
 const STORAGE_KEY = "webnett-local-node";
-
-function id() {
-  return typeof crypto !== "undefined" && crypto.randomUUID
-    ? crypto.randomUUID()
-    : `id_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-}
-
-function wallet(label = "Wallet") {
-  const seed = `${label}_${Date.now()}_${Math.random()}`;
-  return {
-    id: id(),
-    label,
-    address: `wbn_${hash(seed).slice(0, 18)}`,
-    privateKey: `priv_${hash(seed + "_private").repeat(3).slice(0, 48)}`,
-    createdAt: new Date().toLocaleString(),
-  };
-}
 
 function fresh() {
   const founder = wallet("Founder Wallet");
@@ -716,6 +700,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
