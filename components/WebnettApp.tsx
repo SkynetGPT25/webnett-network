@@ -200,6 +200,20 @@ export default function WebnettApp() {
 
   async function mineBlock() {
     if (!selectedWallet || selectedWallet.address === "GENESIS_RESERVE") return log("Select a user wallet first.");
+    for (const tx of pending) {
+      if (tx.note === "User transfer") {
+        if (!tx.payload || !tx.signature || !tx.publicKey) {
+          return log(`Mining blocked: transaction ${short(tx.id)} is missing a valid signature package.`);
+        }
+
+        const ok = await verifyPayloadSignature(tx.payload, tx.signature, tx.publicKey);
+
+        if (!ok) {
+          return log(`Mining blocked: transaction ${short(tx.id)} failed signature verification.`);
+        }
+      }
+    }
+
     const feeReward = pending.reduce((s: number, tx: any) => s + (tx.fee || 0), 0);
     const rewardTx = { id: id(), from: "NETWORK", to: selectedWallet.address, amount: BLOCK_REWARD, fee: 0, note: "Block reward", createdAt: new Date().toLocaleString() };
     const block = {
@@ -705,6 +719,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
