@@ -22,7 +22,7 @@ import {
   Users,
 } from "lucide-react";
 import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY, fmt, short, hash, genesisBlock, balances } from "@/lib/chain";
-import { id, wallet } from "@/lib/wallet";
+import { id, wallet, cryptoWallet } from "@/lib/wallet";
 import { fresh } from "@/lib/network";
 import { STORAGE_KEY, loadNodeState, saveNodeState, clearNodeState, createExportPackage, parseImportPackage } from "@/lib/storage";
 import { getTotalStaked, getSelectedValidator, getSelectedStake, getSpendableBalance, getVotingPower, getRewardShare, getSpendableBalances } from "@/lib/validators";
@@ -132,8 +132,8 @@ export default function WebnettApp() {
     setLogs((p: string[]) => [m, ...p].slice(0, 9));
   }
 
-  function createWallet() {
-    const w = wallet(walletName || `Wallet ${userWallets.length + 1}`);
+  async function createWallet() {
+    const w = await cryptoWallet(walletName || `Wallet ${userWallets.length + 1}`);
     setWallets((p: any[]) => [...p, w]);
     setSelectedWalletId(w.id);
     setWalletName("");
@@ -681,6 +681,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
