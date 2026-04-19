@@ -117,13 +117,13 @@ export default function WebnettApp() {
   );
 
   const userTransfers = txs.filter((tx: any) => tx.note === "User transfer");
-  const selectedValidator = validators.find((v: any) => v.address === selectedWallet?.address);
-  const selectedStake = selectedValidator?.stake || 0;
+  const selectedValidator = getSelectedValidator(validators, selectedWallet);
+  const selectedStake = getSelectedStake(selectedValidator);
   const rawBalance = bal[selectedWallet?.address] || 0;
-  const spendable = Math.max(0, rawBalance - selectedStake);
-  const totalStaked = validators.reduce((s: number, v: any) => s + v.stake, 0);
-  const votingPower = totalStaked > 0 && selectedValidator ? (selectedValidator.stake / totalStaked) * 100 : 0;
-  const rewardShare = totalStaked > 0 && selectedValidator ? rewardPool * (selectedValidator.stake / totalStaked) : 0;
+  const spendable = getSpendableBalance(rawBalance, selectedStake);
+  const totalStaked = getTotalStaked(validators);
+  const votingPower = getVotingPower(totalStaked, selectedValidator);
+  const rewardShare = getRewardShare(totalStaked, selectedValidator, rewardPool);
   const chainHealthy = chain.every((b: any, i: number) => i === 0 || b.previousHash === chain[i - 1].hash);
   const latest = chain[chain.length - 1];
 
@@ -680,6 +680,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
