@@ -25,6 +25,7 @@ import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY, fmt, short, hash, genesisBlock, balan
 import { id, wallet } from "@/lib/wallet";
 import { fresh } from "@/lib/network";
 import { STORAGE_KEY, loadNodeState, saveNodeState, clearNodeState, createExportPackage, parseImportPackage } from "@/lib/storage";
+import { getTotalStaked, getSelectedValidator, getSelectedStake, getSpendableBalance, getVotingPower, getRewardShare, getSpendableBalances } from "@/lib/validators";
 
 
 function Btn({ children, onClick, variant = "primary", disabled = false }: any) {
@@ -679,6 +680,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
