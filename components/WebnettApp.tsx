@@ -150,7 +150,7 @@ export default function WebnettApp() {
     log(`Faucet confirmed: 500 ${SYMBOL} added to ${w.label}.`);
   }
 
-  function queueTransfer() {
+  async function queueTransfer() {
     const value = Number(amount);
     const fee = Math.max(0.01, value * 0.0025);
     if (!selectedWallet || selectedWallet.address === "GENESIS_RESERVE") return log("Select a funded user wallet first.");
@@ -682,6 +682,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
