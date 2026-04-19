@@ -23,30 +23,9 @@ import {
 } from "lucide-react";
 import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY, fmt, short, hash, genesisBlock, balances } from "@/lib/chain";
 import { id, wallet } from "@/lib/wallet";
+import { fresh } from "@/lib/network";
 
 const STORAGE_KEY = "webnett-local-node";
-
-function fresh() {
-  const founder = wallet("Founder Wallet");
-  return {
-    chain: [genesisBlock()],
-    wallets: [{ ...founder, address: "GENESIS_RESERVE" }],
-    pending: [],
-    logs: ["Webnett node booted.", "Genesis block created.", "AI security layer online."],
-    validators: [],
-    rewardPool: 0,
-    proposals: [
-      {
-        id: "proposal-1",
-        title: "Adopt AI-assisted fraud alerts",
-        description: "Enable Webnett to warn users before suspicious demo transfers are queued.",
-        status: "Open",
-        votes: {},
-        createdAt: "Genesis Proposal",
-      },
-    ],
-  };
-}
 
 function Btn({ children, onClick, variant = "primary", disabled = false }: any) {
   const styles: any = {
@@ -700,6 +679,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
