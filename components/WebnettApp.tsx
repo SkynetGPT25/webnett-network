@@ -150,7 +150,7 @@ export default function WebnettApp() {
     log(`Faucet confirmed: 500 ${SYMBOL} added to ${w.label}.`);
   }
 
-  function queueTransfer() {
+  async function queueTransfer() {
     const value = Number(amount);
     const fee = Math.max(0.01, value * 0.0025);
     if (!selectedWallet || selectedWallet.address === "GENESIS_RESERVE") return log("Select a funded user wallet first.");
@@ -169,7 +169,30 @@ export default function WebnettApp() {
       riskScore: value > 250 ? "Medium" : "Low",
       createdAt: new Date().toLocaleString(),
     };
-    setPending((p: any[]) => [...p, tx]);
+    const payload = createTransactionPayload(tx);
+    const payloadHash = hashTransactionPayload(payload);
+    let signature = "";
+    let signatureStatus = "Unsigned";
+
+    try {
+      if (selectedWallet.privateKey && selectedWallet.publicKey) {
+        signature = await signPayload(payload, selectedWallet.privateKey);
+        signatureStatus = "Signed";
+      }
+    } catch {
+      signatureStatus = "Signature failed";
+    }
+
+    const signedTx = {
+      ...tx,
+      payload,
+      payloadHash,
+      signature,
+      publicKey: selectedWallet.publicKey || "",
+      signatureStatus,
+    };
+
+    setPending((p: any[]) => [...p, signedTx]);
     setRecipient("");
     setAmount("");
     log(`Queued ${fmt(value)} ${SYMBOL}. Fee: ${fmt(fee)}. Risk: ${tx.riskScore}.`);
@@ -682,6 +705,8 @@ export default function WebnettApp() {
     </main>
   );
 }
+
+
 
 
 
