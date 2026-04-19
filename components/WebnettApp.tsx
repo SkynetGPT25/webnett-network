@@ -24,8 +24,8 @@ import {
 import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY, fmt, short, hash, genesisBlock, balances } from "@/lib/chain";
 import { id, wallet } from "@/lib/wallet";
 import { fresh } from "@/lib/network";
+import { STORAGE_KEY } from "@/lib/storage";
 
-const STORAGE_KEY = "webnett-local-node";
 
 function Btn({ children, onClick, variant = "primary", disabled = false }: any) {
   const styles: any = {
@@ -679,6 +679,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
