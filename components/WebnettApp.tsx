@@ -27,7 +27,7 @@ import { fresh } from "@/lib/network";
 import { STORAGE_KEY, loadNodeState, saveNodeState, clearNodeState, createExportPackage, parseImportPackage } from "@/lib/storage";
 import { getTotalStaked, getSelectedValidator, getSelectedStake, getSpendableBalance, getVotingPower, getRewardShare, getSpendableBalances } from "@/lib/validators";
 import { getOpenProposalCount, getProposalVoteStats, buildProposal } from "@/lib/governance";
-import { createTransactionPayload, hashTransactionPayload, signPayload } from "@/lib/crypto";
+import { createTransactionPayload, hashTransactionPayload, signPayload, verifyPayloadSignature } from "@/lib/crypto";
 
 
 function Btn({ children, onClick, variant = "primary", disabled = false }: any) {
@@ -198,7 +198,7 @@ export default function WebnettApp() {
     log(`Queued ${fmt(value)} ${SYMBOL}. Fee: ${fmt(fee)}. Risk: ${tx.riskScore}.`);
   }
 
-  function mineBlock() {
+  async function mineBlock() {
     if (!selectedWallet || selectedWallet.address === "GENESIS_RESERVE") return log("Select a user wallet first.");
     const feeReward = pending.reduce((s: number, tx: any) => s + (tx.fee || 0), 0);
     const rewardTx = { id: id(), from: "NETWORK", to: selectedWallet.address, amount: BLOCK_REWARD, fee: 0, note: "Block reward", createdAt: new Date().toLocaleString() };
@@ -705,6 +705,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
