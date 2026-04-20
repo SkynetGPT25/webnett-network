@@ -27,7 +27,8 @@ import { fresh } from "@/lib/network";
 import { STORAGE_KEY, loadNodeState, saveNodeState, clearNodeState, createExportPackage, parseImportPackage } from "@/lib/storage";
 import { getTotalStaked, getSelectedValidator, getSelectedStake, getSpendableBalance, getVotingPower, getRewardShare, getSpendableBalances } from "@/lib/validators";
 import { getOpenProposalCount, getProposalVoteStats, buildProposal } from "@/lib/governance";
-import { createTransactionPayload, hashTransactionPayload, signPayload, verifyPayloadSignature } from "@/lib/crypto";
+import { verifyPayloadSignature } from "@/lib/crypto";
+import { createUserTransfer, signUserTransfer } from "@/lib/transactions";
 
 
 function Btn({ children, onClick, variant = "primary", disabled = false }: any) {
@@ -159,38 +160,14 @@ export default function WebnettApp() {
     if (recipient === selectedWallet.address) return log("Cannot send to yourself in this demo.");
     if (spendable < value + fee) return log("Blocked: insufficient spendable balance.");
 
-    const tx = {
-      id: id(),
+    const tx = createUserTransfer({
       from: selectedWallet.address,
       to: recipient.trim(),
       amount: value,
       fee,
-      note: "User transfer",
-      riskScore: value > 250 ? "Medium" : "Low",
-      createdAt: new Date().toLocaleString(),
-    };
-    const payload = createTransactionPayload(tx);
-    const payloadHash = hashTransactionPayload(payload);
-    let signature = "";
-    let signatureStatus = "Unsigned";
+    });
 
-    try {
-      if (selectedWallet.privateKey && selectedWallet.publicKey) {
-        signature = await signPayload(payload, selectedWallet.privateKey);
-        signatureStatus = "Signed";
-      }
-    } catch {
-      signatureStatus = "Signature failed";
-    }
-
-    const signedTx = {
-      ...tx,
-      payload,
-      payloadHash,
-      signature,
-      publicKey: selectedWallet.publicKey || "",
-      signatureStatus,
-    };
+    const signedTx = await signUserTransfer(tx, selectedWallet);
 
     setPending((p: any[]) => [...p, signedTx]);
     setRecipient("");
@@ -719,6 +696,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
