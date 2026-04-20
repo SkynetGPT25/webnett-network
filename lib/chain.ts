@@ -66,3 +66,49 @@ export function balances(chain: any[], pending: any[] = []) {
 
   return b;
 }
+
+export function validateChainIntegrity(chain: any[] = []) {
+  if (!Array.isArray(chain) || chain.length === 0) {
+    return {
+      ok: false,
+      error: "Chain validation failed: chain is empty.",
+      failedAt: null,
+    };
+  }
+
+  if (chain[0].previousHash !== "0") {
+    return {
+      ok: false,
+      error: "Chain validation failed: genesis block previousHash must be 0.",
+      failedAt: 0,
+    };
+  }
+
+  for (let i = 0; i < chain.length; i += 1) {
+    const block = chain[i];
+    const { hash: storedHash, ...blockWithoutHash } = block;
+    const recalculatedHash = hash(blockWithoutHash);
+
+    if (storedHash !== recalculatedHash) {
+      return {
+        ok: false,
+        error: `Chain validation failed: block #${i} hash does not match its contents.`,
+        failedAt: i,
+      };
+    }
+
+    if (i > 0 && block.previousHash !== chain[i - 1].hash) {
+      return {
+        ok: false,
+        error: `Chain validation failed: block #${i} does not link to previous block.`,
+        failedAt: i,
+      };
+    }
+  }
+
+  return {
+    ok: true,
+    error: null,
+    failedAt: null,
+  };
+}
