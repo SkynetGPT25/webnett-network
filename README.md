@@ -115,3 +115,13 @@ https://webnett-network.vercel.app
 ## Live Demo
 
 https://webnett-network.vercel.app
+
+## Phase 2 Security Progress
+
+- Real browser crypto wallet generation added.
+- Signed transfer payloads added.
+- Transaction payload hashes added.
+- Mining now blocks missing or invalid signed user transfers.
+- Transaction helper module added.
+- Block helper module added.
+- Chain integrity validation now checks block hashes and previous-hash links.
