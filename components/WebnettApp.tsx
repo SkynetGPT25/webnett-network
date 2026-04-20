@@ -27,7 +27,7 @@ import { fresh } from "@/lib/network";
 import { STORAGE_KEY, loadNodeState, saveNodeState, clearNodeState, createExportPackage, parseImportPackage } from "@/lib/storage";
 import { getTotalStaked, getSelectedValidator, getSelectedStake, getSpendableBalance, getVotingPower, getRewardShare, getSpendableBalances } from "@/lib/validators";
 import { getOpenProposalCount, getProposalVoteStats, buildProposal } from "@/lib/governance";
-import { createUserTransfer, signUserTransfer, verifyUserTransfer } from "@/lib/transactions";
+import { createUserTransfer, signUserTransfer, verifyUserTransfer, createFaucetTransaction, createRewardTransaction } from "@/lib/transactions";
 
 
 function Btn({ children, onClick, variant = "primary", disabled = false }: any) {
@@ -143,7 +143,7 @@ export default function WebnettApp() {
 
   function faucet(w = selectedWallet) {
     if (!w || w.address === "GENESIS_RESERVE") return log("Create/select a user wallet first.");
-    const tx = { id: id(), from: "NETWORK", to: w.address, amount: 500, fee: 0, note: "Instant faucet", createdAt: new Date().toLocaleString() };
+    const tx = createFaucetTransaction(w.address);
     const block = { index: chain.length, timestamp: new Date().toLocaleString(), previousHash: latest.hash, nonce: 0, transactions: [tx] };
     setChain((p: any[]) => [...p, { ...block, hash: hash(block) }]);
     setSelectedWalletId(w.id);
@@ -191,7 +191,7 @@ export default function WebnettApp() {
     }
 
     const feeReward = pending.reduce((s: number, tx: any) => s + (tx.fee || 0), 0);
-    const rewardTx = { id: id(), from: "NETWORK", to: selectedWallet.address, amount: BLOCK_REWARD, fee: 0, note: "Block reward", createdAt: new Date().toLocaleString() };
+    const rewardTx = createRewardTransaction(selectedWallet.address, BLOCK_REWARD);
     const block = {
       index: chain.length,
       timestamp: new Date().toLocaleString(),
@@ -695,6 +695,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
