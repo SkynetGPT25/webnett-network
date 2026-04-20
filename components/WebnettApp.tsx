@@ -28,6 +28,7 @@ import { STORAGE_KEY, loadNodeState, saveNodeState, clearNodeState, createExport
 import { getTotalStaked, getSelectedValidator, getSelectedStake, getSpendableBalance, getVotingPower, getRewardShare, getSpendableBalances } from "@/lib/validators";
 import { getOpenProposalCount, getProposalVoteStats, buildProposal } from "@/lib/governance";
 import { createUserTransfer, signUserTransfer, verifyUserTransfer, createFaucetTransaction, createRewardTransaction } from "@/lib/transactions";
+import { createBlock, createMinedBlock } from "@/lib/blocks";
 
 
 function Btn({ children, onClick, variant = "primary", disabled = false }: any) {
@@ -695,6 +696,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
