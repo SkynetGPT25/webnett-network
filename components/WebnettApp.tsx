@@ -145,8 +145,8 @@ export default function WebnettApp() {
   function faucet(w = selectedWallet) {
     if (!w || w.address === "GENESIS_RESERVE") return log("Create/select a user wallet first.");
     const tx = createFaucetTransaction(w.address);
-    const block = { index: chain.length, timestamp: new Date().toLocaleString(), previousHash: latest.hash, nonce: 0, transactions: [tx] };
-    setChain((p: any[]) => [...p, { ...block, hash: hash(block) }]);
+    const block = createBlock({ index: chain.length, previousHash: latest.hash, transactions: [tx], nonce: 0 });
+    setChain((p: any[]) => [...p, block]);
     setSelectedWalletId(w.id);
     log(`Faucet confirmed: 500 ${SYMBOL} added to ${w.label}.`);
   }
@@ -193,14 +193,13 @@ export default function WebnettApp() {
 
     const feeReward = pending.reduce((s: number, tx: any) => s + (tx.fee || 0), 0);
     const rewardTx = createRewardTransaction(selectedWallet.address, BLOCK_REWARD);
-    const block = {
+    const block = createMinedBlock({
       index: chain.length,
-      timestamp: new Date().toLocaleString(),
       previousHash: latest.hash,
-      nonce: Math.floor(Math.random() * 999999),
       transactions: [...pending, rewardTx],
-    };
-    setChain((p: any[]) => [...p, { ...block, hash: hash(block) }]);
+      difficulty: 1,
+    });
+    setChain((p: any[]) => [...p, block]);
     setPending([]);
     if (validators.length > 0) {
       setRewardPool((p: number) => p + BLOCK_REWARD + feeReward);
@@ -243,8 +242,8 @@ export default function WebnettApp() {
     if (!selectedValidator) return log("Selected wallet is not a validator.");
     if (rewardShare <= 0) return log("No validator rewards available.");
     const tx = { id: id(), from: "NETWORK", to: selectedValidator.address, amount: rewardShare, fee: 0, note: "Validator reward claim", createdAt: new Date().toLocaleString() };
-    const block = { index: chain.length, timestamp: new Date().toLocaleString(), previousHash: latest.hash, nonce: 0, transactions: [tx] };
-    setChain((p: any[]) => [...p, { ...block, hash: hash(block) }]);
+    const block = createBlock({ index: chain.length, previousHash: latest.hash, transactions: [tx], nonce: 0 });
+    setChain((p: any[]) => [...p, block]);
     setRewardPool((p: number) => Math.max(0, p - rewardShare));
     log(`${selectedValidator.label} claimed ${fmt(rewardShare)} ${SYMBOL}.`);
   }
@@ -696,6 +695,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
