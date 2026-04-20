@@ -182,10 +182,10 @@ export default function WebnettApp() {
           return log(`Mining blocked: transaction ${short(tx.id)} is missing a valid signature package.`);
         }
 
-        const ok = await verifyPayloadSignature(tx.payload, tx.signature, tx.publicKey);
+        const result = await verifyUserTransfer(tx);
 
-        if (!ok) {
-          return log(`Mining blocked: transaction ${short(tx.id)} failed signature verification.`);
+        if (!result.ok) {
+          return log(`Mining blocked: transaction ${short(tx.id)} ${result.error}.`);
         }
       }
     }
@@ -695,6 +695,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
