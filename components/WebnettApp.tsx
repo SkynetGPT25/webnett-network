@@ -21,7 +21,7 @@ import {
   Wallet,
   Users,
 } from "lucide-react";
-import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY, fmt, short, hash, genesisBlock, balances } from "@/lib/chain";
+import { SYMBOL, BLOCK_REWARD, MAX_SUPPLY, fmt, short, hash, genesisBlock, balances, validateChainIntegrity } from "@/lib/chain";
 import { id, wallet, cryptoWallet } from "@/lib/wallet";
 import { fresh } from "@/lib/network";
 import { STORAGE_KEY, loadNodeState, saveNodeState, clearNodeState, createExportPackage, parseImportPackage } from "@/lib/storage";
@@ -210,7 +210,9 @@ export default function WebnettApp() {
   }
 
   function validateChain() {
-    log(chainHealthy ? "Chain validation passed." : "Chain validation failed.");
+    const result = validateChainIntegrity(chain);
+    log(result.ok ? "Chain validation passed. Hashes and links are healthy." : result.error);
+    return result.ok;
   }
 
   function stake() {
@@ -695,6 +697,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
