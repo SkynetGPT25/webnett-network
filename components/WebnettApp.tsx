@@ -558,6 +558,10 @@ export default function WebnettApp() {
                     <p>Type: {selectedReceipt.note}</p>
                     <p className="break-all">From: {selectedReceipt.from}</p>
                     <p className="break-all">To: {selectedReceipt.to}</p>
+                        {selectedReceipt.signatureStatus && <p><span className="text-slate-400">Receipt Signature Status:</span> {selectedReceipt.signatureStatus}</p>}
+                        {selectedReceipt.payloadHash && <p className="break-all"><span className="text-slate-400">Payload Hash:</span> {selectedReceipt.payloadHash}</p>}
+                        {selectedReceipt.riskScore && <p><span className="text-slate-400">Risk Level:</span> {selectedReceipt.riskScore}</p>}
+                        {selectedReceipt.riskReasons?.length > 0 && <p><span className="text-slate-400">Risk Reasons:</span> {selectedReceipt.riskReasons.join(" ")}</p>}
                   </div>
                 ) : <p className="text-slate-400">Click a transaction below.</p>}
               </div>
