@@ -396,6 +396,38 @@ export default function WebnettApp() {
               <div className="flex justify-between rounded-2xl bg-black/25 p-3"><span>Consensus</span><span>Demo PoW</span></div>
               <div className="flex justify-between rounded-2xl bg-black/25 p-3"><span>Reward</span><span>{BLOCK_REWARD} {SYMBOL}</span></div>
               <div className="flex justify-between rounded-2xl bg-black/25 p-3"><span>Max Supply</span><span>{MAX_SUPPLY.toLocaleString()} {SYMBOL}</span></div>
+              <div className="mt-5 rounded-2xl border border-cyan-300/20 bg-black/25 p-4">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <div>
+                    <p className="font-bold text-cyan-200">Live Webnett Market Graph</p>
+                    <p className="text-xs text-slate-400">Recent block volume and WBN network movement</p>
+                  </div>
+                  <Badge className="bg-emerald-400/15 text-emerald-200 hover:bg-emerald-400/15">Live</Badge>
+                </div>
+                <div className="relative h-48 overflow-hidden rounded-2xl bg-slate-950/80 p-4">
+                  <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "linear-gradient(to right, rgba(148,163,184,.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(148,163,184,.18) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+                  <div className="relative flex h-full items-end gap-2 overflow-x-auto">
+                    {currencyAnalytics.blockSeries.slice(-18).map((block: any) => {
+                      const maxVolume = Math.max(1, ...currencyAnalytics.blockSeries.map((item: any) => item.volume || 0));
+                      const height = Math.max(12, Math.round(((block.volume || 0) / maxVolume) * 135));
+                      return (
+                        <div key={block.blockIndex} className="flex min-w-8 flex-col items-center justify-end gap-1">
+                          <div
+                            title={`Block #${block.blockIndex}: ${fmt(block.volume)} ${SYMBOL}`}
+                            className="w-6 rounded-t-lg bg-cyan-300/80 shadow-lg shadow-cyan-400/20"
+                            style={{ height: `${height}px` }}
+                          />
+                          <span className="text-[10px] text-slate-500">#{block.blockIndex}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+                  <div className="rounded-xl bg-white/5 p-3"><b>{fmt(currencyAnalytics.stats.confirmedUserVolume)} {SYMBOL}</b><br /><span className="text-slate-400">Confirmed volume</span></div>
+                  <div className="rounded-xl bg-white/5 p-3"><b>{fmt(currencyAnalytics.stats.pendingVolume)} {SYMBOL}</b><br /><span className="text-slate-400">Pending volume</span></div>
+                </div>
+              </div>
             </div>
           </Card>
         </div>
