@@ -414,6 +414,52 @@ export default function WebnettApp() {
           ))}
         </div>
 
+          <section className="mt-8">
+            <Card className="mb-6 border-cyan-400/20 bg-cyan-400/10 backdrop-blur">
+              <CardContent className="p-6">
+                <h2 className="mb-4 flex items-center gap-2 text-2xl font-black">
+                  <Activity className="h-6 w-6 text-cyan-200" /> Main Network Overview
+                </h2>
+                <div className="grid gap-3 text-sm md:grid-cols-4">
+                  <div className="rounded-2xl bg-black/25 p-4"><b>{fmt(currencyAnalytics.stats.totalWalletBalance)} {SYMBOL}</b><br /><span className="text-slate-400">Wallet Supply</span></div>
+                  <div className="rounded-2xl bg-black/25 p-4"><b>{fmt(currencyAnalytics.stats.pendingVolume)} {SYMBOL}</b><br /><span className="text-slate-400">Pending Volume</span></div>
+                  <div className="rounded-2xl bg-black/25 p-4"><b>{fmt(currencyAnalytics.stats.confirmedUserVolume)} {SYMBOL}</b><br /><span className="text-slate-400">Confirmed Volume</span></div>
+                  <div className="rounded-2xl bg-black/25 p-4"><b>{fmt(currencyAnalytics.stats.rewardPool)} {SYMBOL}</b><br /><span className="text-slate-400">Reward Pool</span></div>
+                  <div className="rounded-2xl bg-black/25 p-4"><b>{networkGraph.stats.nodeCount}</b><br /><span className="text-slate-400">Network Nodes</span></div>
+                  <div className="rounded-2xl bg-black/25 p-4"><b>{networkGraph.stats.linkCount}</b><br /><span className="text-slate-400">Network Links</span></div>
+                  <div className="rounded-2xl bg-black/25 p-4"><b>{networkGraph.stats.pendingLinks}</b><br /><span className="text-slate-400">Pending Links</span></div>
+                  <div className="rounded-2xl bg-black/25 p-4"><b>{networkGraph.stats.confirmedLinks}</b><br /><span className="text-slate-400">Confirmed Links</span></div>
+                </div>
+                <div className="mt-5 grid gap-4 lg:grid-cols-2">
+                  <div className="rounded-2xl bg-black/25 p-4">
+                    <p className="mb-3 font-bold text-emerald-200">Top Wallet Balances</p>
+                    <div className="space-y-2">
+                      {currencyAnalytics.walletBalances.slice(0, 4).map((item: any) => (
+                        <div key={item.address} className="flex flex-wrap justify-between gap-2 rounded-xl bg-white/5 p-3 text-sm">
+                          <span>{short(item.address)}</span>
+                          <b>{fmt(item.balance)} {SYMBOL}</b>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="rounded-2xl bg-black/25 p-4">
+                    <p className="mb-3 font-bold text-cyan-200">Latest Network Links</p>
+                    <div className="space-y-2">
+                      {networkGraph.links.slice().reverse().slice(0, 4).map((link: any) => (
+                        <div key={link.id} className="rounded-xl bg-white/5 p-3 text-sm">
+                          <div className="flex flex-wrap justify-between gap-2">
+                            <b>{fmt(link.amount)} {SYMBOL}</b>
+                            <span className={link.status === "Pending" ? "text-yellow-200" : "text-emerald-200"}>{link.status}</span>
+                          </div>
+                          <p className="break-all text-xs text-slate-400">From: {short(link.from)} → To: {short(link.to)}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
         <Card className="mt-6 border-emerald-400/20 bg-emerald-400/10">
           <h2 className="mb-4 text-2xl font-black">Simple Test Path</h2>
           <div className="grid gap-3 md:grid-cols-4">
