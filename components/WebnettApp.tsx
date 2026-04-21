@@ -551,6 +551,51 @@ export default function WebnettApp() {
                 <div className="rounded-2xl bg-black/25 p-4"><b>{userTransfers.length}</b><br/><span className="text-slate-400">User transfers</span></div>
               </div>
 
+                  <div className="mb-5 rounded-2xl border border-cyan-300/20 bg-cyan-300/10 p-4">
+                    <h3 className="mb-3 flex items-center gap-2 text-lg font-bold">
+                      <Activity className="h-5 w-5 text-cyan-200" /> Webnett Network Graph
+                    </h3>
+                    <div className="mb-4 grid gap-3 text-sm md:grid-cols-4">
+                      <div className="rounded-xl bg-black/25 p-3"><b>{networkGraph.stats.nodeCount}</b><br /><span className="text-slate-400">Nodes</span></div>
+                      <div className="rounded-xl bg-black/25 p-3"><b>{networkGraph.stats.linkCount}</b><br /><span className="text-slate-400">Links</span></div>
+                      <div className="rounded-xl bg-black/25 p-3"><b>{networkGraph.stats.pendingLinks}</b><br /><span className="text-slate-400">Pending</span></div>
+                      <div className="rounded-xl bg-black/25 p-3"><b>{networkGraph.stats.confirmedLinks}</b><br /><span className="text-slate-400">Confirmed</span></div>
+                    </div>
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <div className="rounded-2xl bg-black/25 p-4">
+                        <p className="mb-2 font-bold text-cyan-200">Network Nodes</p>
+                        <div className="max-h-52 space-y-2 overflow-auto pr-1 text-sm">
+                          {networkGraph.nodes.map((node: any) => (
+                            <div key={node.id} className="rounded-xl bg-white/5 p-3">
+                              <div className="flex flex-wrap justify-between gap-2">
+                                <b>{node.label}</b>
+                                <span className="text-xs text-slate-400">{node.type}</span>
+                              </div>
+                              <p className="break-all text-xs text-slate-500">{node.id}</p>
+                              {node.stake > 0 && <p className="text-xs text-emerald-200">Stake: {fmt(node.stake)} {SYMBOL}</p>}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="rounded-2xl bg-black/25 p-4">
+                        <p className="mb-2 font-bold text-emerald-200">Transaction Links</p>
+                        <div className="max-h-52 space-y-2 overflow-auto pr-1 text-sm">
+                          {networkGraph.links.slice().reverse().map((link: any) => (
+                            <div key={link.id} className="rounded-xl bg-white/5 p-3">
+                              <div className="flex flex-wrap justify-between gap-2">
+                                <b>{fmt(link.amount)} {SYMBOL}</b>
+                                <span className={link.status === "Pending" ? "text-yellow-200" : "text-emerald-200"}>{link.status}</span>
+                              </div>
+                              <p className="break-all text-xs text-slate-500">From: {link.from}</p>
+                              <p className="break-all text-xs text-slate-500">To: {link.to}</p>
+                              <p className="text-xs text-cyan-200">Signature: {link.signatureStatus}</p>
+                              <p className="text-xs text-yellow-200">Risk: {link.riskScore}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
               <div className="mb-5 rounded-2xl bg-black/25 p-4">
                 <h3 className="mb-3 text-lg font-bold">Transaction Receipt</h3>
                 {selectedReceipt ? (
