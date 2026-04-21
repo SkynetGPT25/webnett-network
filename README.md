@@ -132,3 +132,11 @@ https://webnett-network.vercel.app
 - Transfers are now scored before being queued.
 - High-risk transfers can be blocked before entering the pending pool.
 - Risk reasons are attached to transfer records for future UI/explorer display.
+
+## Phase 2 UI Security Checkpoints
+
+- Pending Pool now displays signature status, payload hash, risk level, and risk reasons.
+- Transaction receipts now display signature status, payload hash, risk level, and risk reasons.
+- Sender wallet selection was fixed in the Send tab.
+- AI risk scoring is visible before and after mining.
+- Signed transfers are verified before mining.
