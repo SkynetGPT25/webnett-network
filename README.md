@@ -125,3 +125,10 @@ https://webnett-network.vercel.app
 - Transaction helper module added.
 - Block helper module added.
 - Chain integrity validation now checks block hashes and previous-hash links.
+
+## AI Risk Engine Progress
+
+- AI transaction risk helper module added.
+- Transfers are now scored before being queued.
+- High-risk transfers can be blocked before entering the pending pool.
+- Risk reasons are attached to transfer records for future UI/explorer display.
