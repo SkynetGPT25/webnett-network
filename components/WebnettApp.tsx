@@ -29,6 +29,7 @@ import { getTotalStaked, getSelectedValidator, getSelectedStake, getSpendableBal
 import { getOpenProposalCount, getProposalVoteStats, buildProposal } from "@/lib/governance";
 import { createUserTransfer, signUserTransfer, verifyUserTransfer, createFaucetTransaction, createRewardTransaction } from "@/lib/transactions";
 import { createBlock, createMinedBlock } from "@/lib/blocks";
+import { scoreTransactionRisk } from "@/lib/aiRisk";
 
 
 function Btn({ children, onClick, variant = "primary", disabled = false }: any) {
@@ -166,6 +167,19 @@ export default function WebnettApp() {
       amount: value,
       fee,
     });
+
+    const risk = scoreTransactionRisk({
+      tx,
+      knownAddresses: wallets.map((w: any) => w.address),
+      spendable,
+    });
+
+    if (!risk.approved) {
+      return log(`AI risk engine blocked transfer: ${risk.reasons.join(" ")}`);
+    }
+
+    tx.riskScore = risk.level;
+    tx.riskReasons = risk.reasons;
 
     const signedTx = await signUserTransfer(tx, selectedWallet);
 
@@ -697,6 +711,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
