@@ -553,6 +553,50 @@ export default function WebnettApp() {
                 <div className="rounded-2xl bg-black/25 p-4"><b>{userTransfers.length}</b><br/><span className="text-slate-400">User transfers</span></div>
               </div>
 
+                  <div className="mb-5 rounded-2xl border border-emerald-300/20 bg-emerald-300/10 p-4">
+                    <h3 className="mb-3 flex items-center gap-2 text-lg font-bold">
+                      <Coins className="h-5 w-5 text-emerald-200" /> WBN Currency Analytics
+                    </h3>
+                    <div className="mb-4 grid gap-3 text-sm md:grid-cols-4">
+                      <div className="rounded-xl bg-black/25 p-3"><b>{fmt(currencyAnalytics.stats.totalWalletBalance)} {SYMBOL}</b><br /><span className="text-slate-400">Wallet Supply</span></div>
+                      <div className="rounded-xl bg-black/25 p-3"><b>{fmt(currencyAnalytics.stats.pendingVolume)} {SYMBOL}</b><br /><span className="text-slate-400">Pending Volume</span></div>
+                      <div className="rounded-xl bg-black/25 p-3"><b>{fmt(currencyAnalytics.stats.confirmedUserVolume)} {SYMBOL}</b><br /><span className="text-slate-400">Confirmed Volume</span></div>
+                      <div className="rounded-xl bg-black/25 p-3"><b>{fmt(currencyAnalytics.stats.confirmedFees + currencyAnalytics.stats.pendingFees)} {SYMBOL}</b><br /><span className="text-slate-400">Total Fees</span></div>
+                      <div className="rounded-xl bg-black/25 p-3"><b>{fmt(currencyAnalytics.stats.rewardPool)} {SYMBOL}</b><br /><span className="text-slate-400">Reward Pool</span></div>
+                      <div className="rounded-xl bg-black/25 p-3"><b>{fmt(currencyAnalytics.stats.totalStaked)} {SYMBOL}</b><br /><span className="text-slate-400">Validator Stake</span></div>
+                      <div className="rounded-xl bg-black/25 p-3"><b>{currencyAnalytics.stats.blockCount}</b><br /><span className="text-slate-400">Blocks</span></div>
+                      <div className="rounded-xl bg-black/25 p-3"><b>{currencyAnalytics.stats.userTransferCount}</b><br /><span className="text-slate-400">User Transfers</span></div>
+                    </div>
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <div className="rounded-2xl bg-black/25 p-4">
+                        <p className="mb-2 font-bold text-emerald-200">Top Wallet Balances</p>
+                        <div className="max-h-52 space-y-2 overflow-auto pr-1 text-sm">
+                          {currencyAnalytics.walletBalances.slice(0, 8).map((item: any) => (
+                            <div key={item.address} className="rounded-xl bg-white/5 p-3">
+                              <div className="flex flex-wrap justify-between gap-2">
+                                <b>{fmt(item.balance)} {SYMBOL}</b>
+                                <span className="text-xs text-slate-400">{short(item.address)}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="rounded-2xl bg-black/25 p-4">
+                        <p className="mb-2 font-bold text-cyan-200">Block Volume Timeline</p>
+                        <div className="max-h-52 space-y-2 overflow-auto pr-1 text-sm">
+                          {currencyAnalytics.blockSeries.slice().reverse().map((block: any) => (
+                            <div key={block.blockIndex} className="rounded-xl bg-white/5 p-3">
+                              <div className="flex flex-wrap justify-between gap-2">
+                                <b>Block #{block.blockIndex}</b>
+                                <span className="text-emerald-200">{fmt(block.volume)} {SYMBOL}</span>
+                              </div>
+                              <p className="text-xs text-slate-400">TX: {block.transactions} · Fees: {fmt(block.fees)} {SYMBOL}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div className="mb-5 rounded-2xl border border-cyan-300/20 bg-cyan-300/10 p-4">
                     <h3 className="mb-3 flex items-center gap-2 text-lg font-bold">
                       <Activity className="h-5 w-5 text-cyan-200" /> Webnett Network Graph
