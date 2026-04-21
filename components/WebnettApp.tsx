@@ -533,6 +533,10 @@ export default function WebnettApp() {
                   <p className="font-bold">{fmt(tx.amount)} {SYMBOL}</p>
                   <p className="break-all text-slate-400">From: {tx.from}</p>
                   <p className="break-all text-slate-400">To: {tx.to}</p>
+                          <p className="mt-2 text-xs font-bold text-cyan-200">Signature Status: {tx.signatureStatus || "Not signed"}</p>
+                          {tx.payloadHash && <p className="break-all text-xs text-slate-500">Payload Hash: {tx.payloadHash}</p>}
+                          <p className="mt-2 text-xs font-bold text-yellow-200">Risk Level: {tx.riskScore || "None"}</p>
+                          {tx.riskReasons?.length > 0 && <p className="text-xs text-slate-400">Risk Reasons: {tx.riskReasons.join(" ")}</p>}
                 </div>
               ))}
             </Card>
