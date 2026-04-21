@@ -30,6 +30,7 @@ import { getOpenProposalCount, getProposalVoteStats, buildProposal } from "@/lib
 import { createUserTransfer, signUserTransfer, verifyUserTransfer, createFaucetTransaction, createRewardTransaction } from "@/lib/transactions";
 import { createBlock, createMinedBlock } from "@/lib/blocks";
 import { scoreTransactionRisk } from "@/lib/aiRisk";
+import { buildNetworkGraph } from "@/lib/networkGraph";
 
 
 function Btn({ children, onClick, variant = "primary", disabled = false }: any) {
@@ -107,6 +108,7 @@ export default function WebnettApp() {
   }, [chain, wallets, pending, logs, validators, rewardPool, proposals, selectedWalletId]);
 
   const bal = useMemo(() => balances(chain, pending), [chain, pending]);
+  const networkGraph = useMemo(() => buildNetworkGraph({ wallets, validators, pending, chain }), [wallets, validators, pending, chain]);
   const userWallets = wallets.filter((w: any) => w.address !== "GENESIS_RESERVE");
   const selectedWallet = wallets.find((w: any) => w.id === selectedWalletId) || userWallets[0] || wallets[0];
 
@@ -719,6 +721,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
