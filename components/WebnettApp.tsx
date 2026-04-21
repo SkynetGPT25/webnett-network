@@ -414,6 +414,72 @@ export default function WebnettApp() {
           ))}
         </div>
 
+        <Card className="mt-6 border-cyan-300/20 bg-cyan-300/10">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <h2 className="flex items-center gap-2 text-2xl font-bold">
+                <Activity className="h-6 w-6 text-cyan-200" /> Live Network & Currency Graph
+              </h2>
+              <p className="mt-2 text-sm text-slate-400">Always-visible Webnett network activity, WBN volume, and blockchain movement.</p>
+            </div>
+            <div className="rounded-2xl bg-black/25 px-4 py-3 text-sm">
+              <b>{networkGraph.stats.nodeCount}</b> nodes · <b>{networkGraph.stats.linkCount}</b> links
+            </div>
+          </div>
+
+          <div className="mt-5 grid gap-3 md:grid-cols-4">
+            <div className="rounded-2xl bg-black/25 p-4"><b>{fmt(currencyAnalytics.stats.totalWalletBalance)} {SYMBOL}</b><br /><span className="text-slate-400">Wallet Supply</span></div>
+            <div className="rounded-2xl bg-black/25 p-4"><b>{fmt(currencyAnalytics.stats.confirmedUserVolume)} {SYMBOL}</b><br /><span className="text-slate-400">Confirmed Volume</span></div>
+            <div className="rounded-2xl bg-black/25 p-4"><b>{fmt(currencyAnalytics.stats.pendingVolume)} {SYMBOL}</b><br /><span className="text-slate-400">Pending Volume</span></div>
+            <div className="rounded-2xl bg-black/25 p-4"><b>{fmt(currencyAnalytics.stats.rewardPool)} {SYMBOL}</b><br /><span className="text-slate-400">Reward Pool</span></div>
+          </div>
+
+          <div className="mt-6 rounded-2xl bg-black/25 p-5">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+              <p className="font-bold text-cyan-200">Recent Block Volume</p>
+              <p className="text-sm text-slate-400">Blocks · WBN moved · Fees</p>
+            </div>
+            <div className="flex h-56 items-end gap-2 overflow-x-auto rounded-2xl bg-slate-950/60 p-4">
+              {currencyAnalytics.blockSeries.slice(-24).map((block: any) => {
+                const maxVolume = Math.max(1, ...currencyAnalytics.blockSeries.map((item: any) => item.volume || 0));
+                const height = Math.max(10, Math.round(((block.volume || 0) / maxVolume) * 180));
+                return (
+                  <div key={block.blockIndex} className="flex min-w-12 flex-col items-center justify-end gap-2">
+                    <div
+                      title={`Block #${block.blockIndex}: ${fmt(block.volume)} ${SYMBOL}`}
+                      className="w-8 rounded-t-xl bg-cyan-300/80 shadow-lg shadow-cyan-500/20"
+                      style={{ height: `${height}px` }}
+                    />
+                    <span className="text-xs text-slate-500">#{block.blockIndex}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mt-5 grid gap-4 lg:grid-cols-2">
+            <div className="rounded-2xl bg-black/25 p-4">
+              <p className="mb-3 font-bold text-emerald-200">Top Wallet Balances</p>
+              <div className="space-y-2">
+                {currencyAnalytics.walletBalances.slice(0, 4).map((item: any) => (
+                  <div key={item.address} className="flex flex-wrap justify-between gap-2 rounded-xl bg-white/5 p-3 text-sm">
+                    <span>{short(item.address)}</span>
+                    <b>{fmt(item.balance)} {SYMBOL}</b>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-2xl bg-black/25 p-4">
+              <p className="mb-3 font-bold text-yellow-200">Live Link Status</p>
+              <div className="grid gap-2 text-sm md:grid-cols-2">
+                <div className="rounded-xl bg-white/5 p-3"><b>{networkGraph.stats.pendingLinks}</b><br /><span className="text-slate-400">Pending links</span></div>
+                <div className="rounded-xl bg-white/5 p-3"><b>{networkGraph.stats.confirmedLinks}</b><br /><span className="text-slate-400">Confirmed links</span></div>
+                <div className="rounded-xl bg-white/5 p-3"><b>{fmt(currencyAnalytics.stats.totalStaked)} {SYMBOL}</b><br /><span className="text-slate-400">Validator stake</span></div>
+                <div className="rounded-xl bg-white/5 p-3"><b>{currencyAnalytics.stats.blockCount}</b><br /><span className="text-slate-400">Blocks tracked</span></div>
+              </div>
+            </div>
+          </div>
+        </Card>
         <Card className="mt-6 border-emerald-400/20 bg-emerald-400/10">
           <h2 className="mb-4 text-2xl font-black">Simple Test Path</h2>
           <div className="grid gap-3 md:grid-cols-4">
