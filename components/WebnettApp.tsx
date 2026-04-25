@@ -248,7 +248,7 @@ export default function WebnettApp() {
     }
 
     refreshSkynetStatus();
-    const timer = setInterval(refreshSkynetStatus, 15000);
+    const timer = setInterval(refreshSkynetStatus, 60000);
     return () => {
       alive = false;
       clearInterval(timer);
@@ -289,7 +289,7 @@ export default function WebnettApp() {
     }
 
     refreshSkynetClaims();
-    const timer = setInterval(refreshSkynetClaims, 15000);
+    const timer = setInterval(refreshSkynetClaims, 60000);
     return () => {
       alive = false;
       clearInterval(timer);
@@ -441,7 +441,7 @@ export default function WebnettApp() {
       setBonusPromptTrigger("slowdown");
       setLastEngagementAt(Date.now());
       log(`Skynet surfaced a bonus mission because activity slowed: ${prompt.title}.`);
-    }, 15000);
+    }, 45000);
 
     return () => clearInterval(timer);
   }, [earnEnabled, bonusPromptTrigger, earnLedger, lastEngagementAt, selectedBonusPromptId]);
@@ -2539,6 +2539,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
