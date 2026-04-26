@@ -386,7 +386,61 @@ export default function WebnettApp() {
     [skynetClaimInbox.claims]
   );
   const skynetPendingWbn = Number(skynetClaimInbox.pendingTotal || 0);
+  const shellImportedClaims = useMemo(() => earnLedger.filter((entry: any) => String(entry?.missionId || '').startsWith('skynet-shell-')), [earnLedger]);
 
+  // Auto-import pending Skynet shell claims into the main earn ledger
+  useEffect(() => {
+    const pendingShellClaims = Array.isArray(skynetClaimInbox.claims)
+      ? skynetClaimInbox.claims.filter((claim: any) => claim.status === "pending" && Number(claim.amount || 0) > 0)
+      : [];
+
+    if (!pendingShellClaims.length) return;
+
+    setEarnLedger((ledger: any[]) => {
+      const existingMissionIds = new Set(ledger.map((entry: any) => String(entry?.missionId || "")));
+      const imports = pendingShellClaims
+        .filter((claim: any) => !existingMissionIds.has(`skynet-shell-${claim.id}`))
+        .map((claim: any) =>
+          createRewardLedgerEntry({
+            mission: {
+              id: `skynet-shell-${claim.id}`,
+              title: claim.rewardReason || "Skynet shell reward",
+              category: "Skynet Shell",
+              reward: Number(claim.amount || 0),
+            },
+            amount: Number(claim.amount || 0),
+            source: "Skynet shell reward import",
+            lane: "ai_mission",
+            bridgeResult: {
+              mode: "skynet-shell-import",
+              claimId: claim.id,
+              summary: claim.rewardSummary || "Imported from the Skynet shell inbox.",
+              rewardReason: claim.rewardReason || "Imported from the Skynet shell inbox.",
+              threadId: claim.threadId || "",
+              responseMode: claim.responseMode || "",
+            },
+          })
+        );
+
+      return imports.length ? [...imports, ...ledger] : ledger;
+    });
+
+    setEarnProfile((profile: any) => {
+      const existingImportedIds = new Set(
+        earnLedger
+          .filter((entry: any) => String(entry?.missionId || "").startsWith("skynet-shell-"))
+          .map((entry: any) => String(entry?.missionId || ""))
+      );
+
+      let nextProfile = profile;
+      for (const claim of pendingShellClaims) {
+        const missionId = `skynet-shell-${claim.id}`;
+        if (existingImportedIds.has(missionId)) continue;
+        nextProfile = updateProfileForEarn(nextProfile, Number(claim.amount || 0));
+      }
+      return nextProfile;
+    });
+  }, [skynetClaimInbox.claims]);
   useEffect(() => {
     const markEngaged = () => setLastEngagementAt(Date.now());
     const onVisibilityChange = () => {
@@ -2538,6 +2592,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
