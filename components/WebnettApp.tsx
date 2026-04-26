@@ -1098,9 +1098,15 @@ export default function WebnettApp() {
     log(`New bonus mission loaded: ${prompt.title}.`);
   }
 
-  function claimEarnReward() {
+  async function claimEarnReward() {
     if (!selectedWallet || selectedWallet.address === "GENESIS_RESERVE") return log("Create/select a user wallet before claiming rewards.");
     if (claimableRewards <= 0) return log("No claimable earn rewards yet.");
+
+    const importedPendingClaims = (Array.isArray(skynetClaimInbox.claims) ? skynetClaimInbox.claims : []).filter(
+      (claim: any) =>
+        claim.status === "pending" &&
+        earnLedger.some((entry: any) => String(entry?.missionId || "") === `skynet-shell-${claim.id}` && entry.status === "claimable")
+    );
 
     const tx = createRewardTransaction(selectedWallet.address, claimableRewards, "Webnett Earn reward");
     const block = createBlock({ index: chain.length, previousHash: latest.hash, transactions: [tx], nonce: 0 });
@@ -1109,9 +1115,30 @@ export default function WebnettApp() {
     setEarnLedger((ledger: any[]) => markLedgerClaimed(ledger, tx.id));
     setEarnProfile((profile: any) => updateProfileForClaim(profile, claimableRewards));
     setSelectedReceipt({ ...tx, blockIndex: block.index, blockHash: block.hash });
+
+    if (importedPendingClaims.length) {
+      await Promise.all(
+        importedPendingClaims.map((claim: any) =>
+          fetch("/api/skynet/claims", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              claimId: claim.id,
+              action: "settle",
+              walletAddress: selectedWallet.address,
+              walletLabel: selectedWallet.label,
+              txId: tx.id,
+              blockIndex: block.index,
+              reviewNote: `Auto-settled through Webnett earn claim into ${selectedWallet.label}.`,
+            }),
+          }).catch(() => null)
+        )
+      );
+      await refreshSkynetClaimInbox({ quiet: true });
+    }
+
     log(`Claimed ${fmt(claimableRewards)} ${SYMBOL} into block #${block.index}.`);
   }
-
   function resetDailyMissions() {
     setDailyMissions(getDailyMissions());
     setSelectedMissionId("ai-deep-question");
