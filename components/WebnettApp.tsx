@@ -1149,7 +1149,6 @@ export default function WebnettApp() {
     ["validators", "Validators"],
     ["governance", "Governance"],
     ["settings", "Settings"],
-    ["launch", "Launch"],
     ["advanced", "Advanced"],
   ];
 
@@ -2539,6 +2538,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
