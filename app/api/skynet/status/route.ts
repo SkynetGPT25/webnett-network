@@ -7,23 +7,14 @@ const SKYNET_CHAT_URL =
   process.env.NEXT_PUBLIC_SKYNET_CHAT_URL ||
   "http://127.0.0.1:4020/chat?sandbox=touring_autonomy_lab";
 
-function getOrigin(url: string) {
-  try {
-    return new URL(url).origin;
-  } catch {
-    return "http://127.0.0.1:4020";
-  }
-}
-
 export async function GET() {
   const checkedAt = new Date().toISOString();
-  const origin = getOrigin(SKYNET_CHAT_URL);
 
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 5000);
 
-    const response = await fetch(origin, {
+    const response = await fetch(SKYNET_CHAT_URL, {
       method: "GET",
       signal: controller.signal,
       cache: "no-store",
