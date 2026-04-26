@@ -2444,7 +2444,7 @@ export default function WebnettApp() {
         {tab === "launch" && (
           <div className="mt-6 grid gap-6 lg:grid-cols-3">
             <Card className="lg:col-span-2">
-              <h2 className="mb-4 flex items-center gap-2 text-3xl font-black"><Rocket className="text-cyan-200" /> Launch Center</h2>
+              <h2 className="mb-4 flex items-center gap-2 text-3xl font-black"><Rocket className="text-cyan-200" /> Earn Center</h2>
               <p className="text-lg leading-8 text-slate-300">Webnett is a local prototype with wallets, transfers, mining, validators, governance, and rewards.</p>
               <div className="mt-6 rounded-2xl bg-black/25 p-5">
                 <div className="flex justify-between"><h3 className="font-bold"><Target className="mr-2 inline h-5 w-5 text-emerald-200" />Testnet Readiness</h3><b>{score}%</b></div>
@@ -2619,6 +2619,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
