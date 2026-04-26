@@ -64,7 +64,7 @@ import { createUserProfile, createUserSettings, normalizeHandle } from "@/lib/ac
 
 const SKYNET_CHAT_URL =
   process.env.NEXT_PUBLIC_SKYNET_CHAT_URL ||
-  "http://192.168.40.185:4020/chat?sandbox=touring_autonomy_lab";
+  "http://127.0.0.1:4020/chat?sandbox=touring_autonomy_lab";
 
 
 function Btn({ children, onClick, variant = "primary", disabled = false }: any) {
@@ -2619,6 +2619,7 @@ export default function WebnettApp() {
     </main>
   );
 }
+
 
 
 
