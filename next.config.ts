@@ -1,7 +1,8 @@
-﻿import type { NextConfig } from "next";
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ["localhost", "127.0.0.1"],
+  reactStrictMode: true,
+  swcMinify: true,
 };
 
 export default nextConfig;
